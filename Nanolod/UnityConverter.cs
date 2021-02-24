@@ -6,8 +6,9 @@ using NVector3 = Nanomesh.Vector3;
 using NVector2F = Nanomesh.Vector2F;
 using NVector3F = Nanomesh.Vector3F;
 using NBoneWeight = Nanomesh.BoneWeight;
+using Nanomesh;
 
-namespace Nanomesh.Unity
+namespace Nanolod
 {
     public static class UnityConverter
     {

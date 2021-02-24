@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
+using Nanomesh;
 
-namespace Nanomesh.Unity
+namespace Nanolod.Editor
 {
-    public static class Tests
+    public static class LODGroupMenu
     {
         [MenuItem("CONTEXT/LODGroup/💩 Auto Generate LODs", priority = 0)]
         public static void GenerateLODs(MenuCommand command)

@@ -1,22 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\nanomesh\Nanomesh\Nanomesh.csproj" />
+    <ProjectReference Include="..\Nanolod\Nanolod.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="UnityEditor">
+      <HintPath>..\..\..\..\..\Program Files\Unity\Hub\Editor\2019.3.2f1\Editor\Data\Managed\UnityEditor.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\..\Program Files\Unity\Hub\Editor\2019.3.2f1\Editor\Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
 
   <Target Name="CopyToUnityPackage" AfterTargets="AfterBuild">
-    <Copy SourceFiles="$(TargetDir)Nanolod.dll" DestinationFolder="$(SolutionDir)Package" />
-    <Copy SourceFiles="$(TargetDir)Nanomesh.dll" DestinationFolder="$(SolutionDir)Package" />
+    <Copy SourceFiles="$(TargetDir)Nanolod.Editor.dll" DestinationFolder="$(SolutionDir)Package" />
   </Target>
 
 </Project>
