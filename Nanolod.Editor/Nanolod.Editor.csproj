@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="UnityTechnologies.UnityEditor" Version="2020.2.2.1" />
+    <PackageReference Include="UnityTechnologies.UnityEngine" Version="2020.2.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Nanolod\Nanolod.csproj" />
   </ItemGroup>
 

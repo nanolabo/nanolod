@@ -1,17 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\nanomesh\Nanomesh\Nanomesh.csproj" />
+    <PackageReference Include="UnityTechnologies.UnityEngine" Version="2020.2.2.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\..\Program Files\Unity\Hub\Editor\2019.3.2f1\Editor\Data\Managed\UnityEngine.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\nanomesh\Nanomesh\Nanomesh.csproj" />
   </ItemGroup>
 
   <Target Name="CopyToUnityPackage" AfterTargets="AfterBuild">
