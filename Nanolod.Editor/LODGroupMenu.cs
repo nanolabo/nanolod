@@ -3,15 +3,20 @@ using UnityEditor;
 using System.Collections.Generic;
 using Nanomesh;
 
-namespace Nanolod.Editor
+namespace Nanolod
 {
     public static class LODGroupMenu
     {
-        [MenuItem("CONTEXT/LODGroup/💩 Auto Generate LODs", priority = 0)]
+        [MenuItem("CONTEXT/LODGroup/Auto Generate LODs", priority = 0)]
         public static void GenerateLODs(MenuCommand command)
         {
             LODGroup lodGroup = (LODGroup)command.context;
 
+            GenerateLODs(lodGroup);
+        }
+
+        public static void GenerateLODs(LODGroup lodGroup, List<Mesh> newMeshes = null)
+        {
             var lods = lodGroup.GetLODs();
 
             // Cleanup
@@ -51,6 +56,9 @@ namespace Nanolod.Editor
                 UnityConverter.ToUnityMesh(sharedMesh, outputMesh);
                 outputMesh.RecalculateTangents(); // Mandatory for some shaders
 
+                if (newMeshes != null)
+                    newMeshes.Add(outputMesh);
+
                 return outputMesh;
             }
 
@@ -59,7 +67,7 @@ namespace Nanolod.Editor
             lods[0].renderers = renderers;
 
             // Build LODs
-            for (int i = 1; i < lods.Length; i++) 
+            for (int i = 1; i < lods.Length; i++)
             {
                 List<Renderer> lodRenderers = new List<Renderer>();
 

@@ -14,7 +14,9 @@
 
   <Target Name="CopyToUnityPackage" AfterTargets="AfterBuild">
     <Copy SourceFiles="$(TargetDir)Nanolod.dll" DestinationFolder="$(SolutionDir)Package" />
+    <Copy SourceFiles="$(TargetDir)Nanolod.pdb" DestinationFolder="$(SolutionDir)Package" />
     <Copy SourceFiles="$(TargetDir)Nanomesh.dll" DestinationFolder="$(SolutionDir)Package" />
+    <Copy SourceFiles="$(TargetDir)Nanomesh.pdb" DestinationFolder="$(SolutionDir)Package" />
   </Target>
 
 </Project>
