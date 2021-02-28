@@ -8,9 +8,11 @@ namespace Nanolod
     {
         private void OnPostprocessModel(GameObject gameObject)
         {
-            LODGroup lodGroup = gameObject.AddComponent<LODGroup>();
-
             var settings = ModelImporterEditorInjecter.Current;
+            if (settings.lods.lods.Length == 0)
+                return;
+
+            LODGroup lodGroup = gameObject.AddComponent<LODGroup>();
 
             lodGroup.SetLODs(settings.lods.ConvertToLods());
 
@@ -18,10 +20,11 @@ namespace Nanolod
 
             LODGroupMenu.GenerateLODs(lodGroup, newMeshes);
 
+            int i = 0;
+
             foreach (Mesh newMesh in newMeshes)
             {
-                Debug.Log("cc " + newMesh);
-                AssetDatabase.AddObjectToAsset(newMesh, assetPath);
+                context.AddObjectToAsset("nanolod_lod_" + i++, newMesh);
             }
         }
     }

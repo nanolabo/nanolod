@@ -73,8 +73,17 @@ namespace Nanolod
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
+            _serializedProperty = property;
+
             EditorGUI.BeginProperty(position, label, property);
 
+            DrawLODs(property);
+
+            EditorGUI.EndProperty();
+        }
+
+        private void DrawLODs(SerializedProperty property)
+        {
             if (Event.current.type == EventType.Layout)
             {
                 selectedLodIndex = selectedLodIndexPending;
@@ -100,6 +109,9 @@ namespace Nanolod
                     lodsArray.GetArrayElementAtIndex(0).FindPropertyRelative("threshold").floatValue = 0.5f;
                     lodsArray.GetArrayElementAtIndex(1).FindPropertyRelative("threshold").floatValue = 0.25f;
                     lodsArray.GetArrayElementAtIndex(2).FindPropertyRelative("threshold").floatValue = 0.05f;
+
+                    SetDirty();
+                    return;
                 }
             }
             else
@@ -110,7 +122,8 @@ namespace Nanolod
                     {
                         lodsArray.DeleteArrayElementAtIndex(0);
                     }
-                    EditorGUI.EndProperty();
+
+                    SetDirty();
                     return;
                 }
 
@@ -124,7 +137,7 @@ namespace Nanolod
                 Rect rect = new Rect();
                 for (int i = 0; i < count; i++)
                 {
-                    rect = DisplayLod(lodsArray, count, ref sliderRect, ref previousThreshold, i);
+                    rect = DrawLOD(lodsArray, count, ref sliderRect, ref previousThreshold, i);
                     if (i < count)
                     {
                         DrawSplitter(i, previousThreshold, rect);
@@ -134,7 +147,7 @@ namespace Nanolod
                 if (previousThreshold > 0f)
                 {
                     DrawSplitter(count - 1, previousThreshold, rect);
-                    DisplayLod(lodsArray, count, ref sliderRect, ref previousThreshold, count);
+                    DrawLOD(lodsArray, count, ref sliderRect, ref previousThreshold, count);
                 }
 
                 if (Event.current.type == EventType.MouseUp)
@@ -159,14 +172,12 @@ namespace Nanolod
                     lodsArray.GetArrayElementAtIndex(grabbing).FindPropertyRelative("threshold").doubleValue = newThreshold;
 
                     // Triggers change (for Repaint in Editors)
-                    Repaint(property);
+                    SetDirty();
                 }
             }
-
-            EditorGUI.EndProperty();
         }
 
-        private Rect DisplayLod(SerializedProperty lodsArray, int count, ref Rect sliderRect, ref float previousThreshold, int i)
+        private Rect DrawLOD(SerializedProperty lodsArray, int count, ref Rect sliderRect, ref float previousThreshold, int i)
         {
             bool culled = false;
             float currentThreshold;
@@ -220,7 +231,7 @@ namespace Nanolod
                     {
                         selectedLodIndexPending = i;
                         // Triggers change (for Repaint in Editors)
-                        Repaint(lodsArray);
+                        SetDirty();
                     }
                     else if (Event.current.button == 1)
                     {
@@ -230,7 +241,7 @@ namespace Nanolod
                         genericMenu.AddItem(new GUIContent("Add"), false, () =>
                         {
                             InsertLOD(lodsArray, selectedLodIndexPending);
-                            Repaint(lodsArray);
+                            SetDirty();
                         });
 
                         if (count > 1)
@@ -238,7 +249,7 @@ namespace Nanolod
                             genericMenu.AddItem(new GUIContent("Remove"), false, () =>
                             {
                                 DeleteLOD(lodsArray, selectedLodIndexPending);
-                                Repaint(lodsArray);
+                                SetDirty();
                             });
                         }
                         else
@@ -267,11 +278,23 @@ namespace Nanolod
             }
         }
 
-        private void Repaint(SerializedProperty property)
+        private SerializedProperty _serializedProperty;
+
+        public SerializedObject serializedObject => _serializedProperty.serializedObject;
+
+        public OptimizationSettings optimizationSettings => serializedObject.targetObject as OptimizationSettings;
+
+        private void SetDirty()
         {
-            property.serializedObject.ApplyModifiedPropertiesWithoutUndo();
-            property.serializedObject.Update();
-            ModelImporterEditorInjecter.RepaintModelImporters();
+            // Save to extra properties
+            optimizationSettings.SaveToImporter();
+
+            // Apply
+            serializedObject.ApplyModifiedPropertiesWithoutUndo();
+            serializedObject.Update();
+
+            // Repaint editor
+            optimizationSettings.RepaintEditor();
         }
 
         private void DeleteLOD(SerializedProperty lodsArray, int index)

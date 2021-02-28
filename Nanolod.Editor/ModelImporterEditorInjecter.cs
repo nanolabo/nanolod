@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using UnityEditor;
-using UnityEngine;
 
 namespace Nanolod
 {
@@ -28,39 +27,16 @@ namespace Nanolod
             {
                 if (editor.GetType().IsAssignableFrom(_modelImporterEditorType))
                 {
-                    Current = ScriptableObject.CreateInstance<OptimizationSettings>();
-
-                    string assetPath = AssetDatabase.GetAssetPath(editor.target as ModelImporter);
-                    GameObject gameObject = AssetDatabase.LoadAssetAtPath<GameObject>(assetPath);
-                    if (gameObject != null)
-                    {
-                        LODGroup lodGroup = gameObject.GetComponent<LODGroup>();
-                        if (lodGroup != null)
-                        {
-                            Current.lods.CreateFromLods(lodGroup.GetLODs());
-                        }
-                    }
+                    Current = OptimizationSettings.Create(editor);
 
                     SerializedObject serializedObject = new SerializedObject(Current);
-
                     SerializedProperty serializedPropertyMyInt = serializedObject.FindProperty("lods");
 
                     var tabs = (Array)_assetTabbedImporterType.GetField("m_Tabs", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(editor);
                     var modelTab = tabs.GetValue(0);
-                    modelTab.GetType().GetField("m_ImportCameras", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(modelTab, serializedPropertyMyInt);
+                    modelTab.GetType().GetField("m_SortHierarchyByName", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(modelTab, serializedPropertyMyInt);
 
                     editor.Repaint();
-                }
-            }
-        }
-
-        public static void RepaintModelImporters()
-        {
-            foreach (Editor ed in ActiveEditorTracker.sharedTracker.activeEditors)
-            {
-                if (ed.GetType().IsAssignableFrom(_modelImporterEditorType))
-                {
-                    ed.Repaint();
                 }
             }
         }
