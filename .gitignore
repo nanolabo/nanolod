@@ -26,7 +26,6 @@ x64/
 *_p.c
 *_i.h
 *.ilk
-*.meta
 *.pch
 *.pdb
 *.pgc
@@ -137,3 +136,4 @@ _NCrunch*
 .idea
 Nanomesh.Tests/output
 Package/*.dll
+Package/*.pdb.meta
