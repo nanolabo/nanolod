@@ -134,6 +134,7 @@ $RECYCLE.BIN/
 
 _NCrunch*
 .idea
-Nanomesh.Tests/output
+
 Package/*.dll
 Package/*.pdb.meta
+Package/Cache*

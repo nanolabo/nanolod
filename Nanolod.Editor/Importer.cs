@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Nanolod
 {
@@ -9,7 +10,7 @@ namespace Nanolod
         private void OnPostprocessModel(GameObject gameObject)
         {
             var settings = ModelImporterEditorInjecter.Current;
-            if (settings.lods.lods.Length == 0)
+            if (settings == null || settings.lods.lods.Length == 0)
                 return;
 
             LODGroup lodGroup = gameObject.AddComponent<LODGroup>();
@@ -22,10 +23,20 @@ namespace Nanolod
 
             int i = 0;
 
+            string directory = "Packages/com.nanolabo.nanolod/Cache";
+            string path = Path.Combine(directory, $"{gameObject.GetInstanceID()}.asset");
+
+            Directory.CreateDirectory(Path.GetFullPath(path));
+
+            AssetDatabase.CreateAsset(settings, path);
+
             foreach (Mesh newMesh in newMeshes)
             {
-                context.AddObjectToAsset("nanolod_lod_" + i++, newMesh);
+                newMesh.name = "mesh_" + i;
+                AssetDatabase.AddObjectToAsset(newMesh, path);
             }
+
+            AssetDatabase.SaveAssets();
         }
     }
 }
