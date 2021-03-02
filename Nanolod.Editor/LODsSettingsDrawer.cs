@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Nanolod
 {
-    [CustomPropertyDrawer(typeof(Lods))]
+    [CustomPropertyDrawer(typeof(LODs))]
     public class LODsSettingsDrawer : PropertyDrawer
     {
         const int SPLITTER_WIDTH = 12;

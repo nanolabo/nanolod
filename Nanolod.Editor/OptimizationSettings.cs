@@ -7,9 +7,11 @@ namespace Nanolod
 {
     public class OptimizationSettings : ScriptableObject
     {
-        private ModelImporter modelImporter;
-        private Editor editor;
-        public Lods lods = new Lods();
+        public Editor Editor { get; private set; }
+
+        public ModelImporter ModelImporter { get; private set; }
+
+        public LODs lods;
 
         public static OptimizationSettings Create(Editor modelImporterEditor)
         {
@@ -17,8 +19,9 @@ namespace Nanolod
                 throw new Exception("Editor must be a ModelImporterEditor !");
 
             var optimizationSettings = CreateInstance<OptimizationSettings>();
-            optimizationSettings.modelImporter = modelImporter;
-            optimizationSettings.editor = modelImporterEditor;
+            optimizationSettings.ModelImporter = modelImporter;
+            optimizationSettings.Editor = modelImporterEditor;
+            optimizationSettings.lods = new LODs();
 
             optimizationSettings.LoadFromImporter();
 
@@ -27,7 +30,7 @@ namespace Nanolod
 
         public void RepaintEditor()
         {
-            editor.Repaint();
+            Editor.Repaint();
         }
 
         public void LoadFromImporter()
@@ -36,7 +39,7 @@ namespace Nanolod
             if (val == "nanolod")
             {
                 // Attempt to load from LODGroup if there is one already
-                string assetPath = AssetDatabase.GetAssetPath(modelImporter);
+                string assetPath = AssetDatabase.GetAssetPath(ModelImporter);
                 GameObject gameObject = AssetDatabase.LoadAssetAtPath<GameObject>(assetPath);
                 if (gameObject != null)
                 {
@@ -73,9 +76,9 @@ namespace Nanolod
 
         private int GetExtraPropertyIndex()
         {
-            for (int i = 0; i < modelImporter.extraUserProperties.Length; i++)
+            for (int i = 0; i < ModelImporter.extraUserProperties.Length; i++)
             {
-                if (modelImporter.extraUserProperties[i].StartsWith("nanolod"))
+                if (ModelImporter.extraUserProperties[i].StartsWith("nanolod"))
                     return i;
             }
             return -1; // not found
@@ -88,23 +91,23 @@ namespace Nanolod
                 if (index == -1)
                     return "nanolod";
                 else
-                    return modelImporter.extraUserProperties[index];
+                    return ModelImporter.extraUserProperties[index];
             }
             set
             {
                 int index = GetExtraPropertyIndex();
                 if (index == -1)
                 {
-                    var props = modelImporter.extraUserProperties;
+                    var props = ModelImporter.extraUserProperties;
                     index = props.Length;
                     CollectionExtensions.Append(ref props, value);
-                    modelImporter.extraUserProperties = props;
+                    ModelImporter.extraUserProperties = props;
                 }
                 else
                 {
-                    var props = modelImporter.extraUserProperties;
+                    var props = ModelImporter.extraUserProperties;
                     props[index] = value;
-                    modelImporter.extraUserProperties = props;
+                    ModelImporter.extraUserProperties = props;
                 }
                 ///Debug.Log($"Save '{value}' at index {index}");
             }
@@ -112,7 +115,7 @@ namespace Nanolod
     }
 
     [Serializable]
-    public class Lods
+    public class LODs
     {
         public Lod[] lods = new Lod[0];
 

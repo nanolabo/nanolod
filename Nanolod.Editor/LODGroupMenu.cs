@@ -123,7 +123,7 @@ namespace Nanolod
                     }
                 }
 
-                Debug.Log($"LOD{i} created with {lodRenderers.Count} renderers at {100f * lods[i - 1].screenRelativeTransitionHeight}% poly ratio");
+                ///Debug.Log($"LOD{i} created with {lodRenderers.Count} renderers at {100f * lods[i - 1].screenRelativeTransitionHeight}% poly ratio");
                 lods[i].renderers = lodRenderers.ToArray();
             }
 
