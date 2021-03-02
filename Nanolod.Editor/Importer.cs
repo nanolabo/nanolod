@@ -17,7 +17,7 @@ namespace Nanolod
 
             lodGroup.SetLODs(settings.lods.ConvertToLods());
 
-            List<Mesh> newMeshes = new List<Mesh>();
+            HashSet<Mesh> newMeshes = new HashSet<Mesh>();
 
             LODGroupMenu.GenerateLODs(lodGroup, newMeshes);
 

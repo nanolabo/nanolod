@@ -43,19 +43,19 @@ namespace Nanolod
                     LODGroup lodGroup = gameObject.GetComponent<LODGroup>();
                     if (lodGroup != null)
                     {
-                        Debug.Log("Loaded from existing LODs");
+                        ///Debug.Log("Loaded from existing LODs");
                         lods.CreateFromLods(lodGroup.GetLODs());
                         return;
                     }
                 }
                 // Otherwise start with no LODs
-                Debug.Log("Create new LODs");
+                ///Debug.Log("Create new LODs");
                 lods.lods = new Lod[0];
             }
             else
             {
                 // Load from property
-                Debug.Log("Load from property (" + val + ")");
+                ///Debug.Log("Load from property (" + val + ")");
                 char[] splitchars = new[] { '_' };
                 string[] split = val.Split(splitchars);
                 lods.lods = new Lod[split.Length - 1];
@@ -106,7 +106,7 @@ namespace Nanolod
                     props[index] = value;
                     modelImporter.extraUserProperties = props;
                 }
-                Debug.Log($"Save '{value}' at index {index}");
+                ///Debug.Log($"Save '{value}' at index {index}");
             }
         }
     }

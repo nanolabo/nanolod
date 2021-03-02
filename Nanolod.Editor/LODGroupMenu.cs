@@ -16,7 +16,7 @@ namespace Nanolod
             GenerateLODs(lodGroup);
         }
 
-        public static void GenerateLODs(LODGroup lodGroup, List<Mesh> newMeshes = null)
+        public static void GenerateLODs(LODGroup lodGroup, HashSet<Mesh> newMeshes = null)
         {
             var lods = lodGroup.GetLODs();
 
@@ -84,8 +84,15 @@ namespace Nanolod
                             MeshRenderer mr = gameObject.AddComponent<MeshRenderer>();
                             MeshFilter mf = gameObject.AddComponent<MeshFilter>();
 
+                            Mesh originalMesh = meshFilter.sharedMesh;
+                            Mesh optimizedMesh = optimizedMeshes[originalMesh]; // Todo : Don't create new mesh if it's the same (tri count);
+
+                            optimizedMesh.name = originalMesh.name + "_LOD" + i;
+
                             mr.sharedMaterials = meshRenderer.sharedMaterials;
-                            mf.sharedMesh = optimizedMeshes[meshFilter.sharedMesh]; // Todo : Don't create new mesh if it's the same (tri count)
+                            mf.sharedMesh = optimizedMesh;
+
+                            newMeshes.Add(optimizedMesh);
 
                             lodRenderers.Add(mr);
                         }
@@ -102,8 +109,15 @@ namespace Nanolod
                         smr.bones = skinnedMeshRenderer.bones;
                         smr.rootBone = skinnedMeshRenderer.rootBone;
 
+                        Mesh originalMesh = skinnedMeshRenderer.sharedMesh;
+                        Mesh optimizedMesh = optimizedMeshes[originalMesh]; // Todo : Don't create new mesh if it's the same (tri count);
+
+                        optimizedMesh.name = originalMesh.name + "_LOD" + i;
+
                         smr.sharedMaterials = skinnedMeshRenderer.sharedMaterials;
-                        smr.sharedMesh = optimizedMeshes[skinnedMeshRenderer.sharedMesh]; // Todo : Don't create new mesh if it's the same (tri count)
+                        smr.sharedMesh = optimizedMesh;
+
+                        newMeshes.Add(optimizedMesh);
 
                         lodRenderers.Add(smr);
                     }
