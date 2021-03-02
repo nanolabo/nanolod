@@ -2,6 +2,7 @@
 using UnityEditor;
 using System.Collections.Generic;
 using Nanomesh;
+using System.Linq;
 
 namespace Nanolod
 {
@@ -28,47 +29,43 @@ namespace Nanolod
                 }
             }
 
-            // This allows the function to decimate every mesh a single time for all its instances and all its LODs
-            Dictionary<Mesh, DecimateModifier> decimationModifiers = new Dictionary<Mesh, DecimateModifier>();
-
-            Mesh decimateGradualy(Mesh mesh, float ratio)
-            {
-                if (!decimationModifiers.ContainsKey(mesh))
-                {
-                    SharedMesh smesh = UnityConverter.ToSharedMesh(mesh);
-                    ConnectedMesh cmesh = ConnectedMesh.Build(smesh);
-                    cmesh.MergePositions(0.001);
-
-                    var decimationModifier = new DecimateModifier();
-                    decimationModifier.Initialize(cmesh);
-
-                    decimationModifiers.Add(mesh, decimationModifier);
-                }
-
-                decimationModifiers[mesh].DecimateToRatio(ratio);
-
-                Mesh outputMesh = new Mesh();
-                // We can use the same format since we expect less indices after decimation
-                outputMesh.indexFormat = mesh.indexFormat;
-                outputMesh.bindposes = mesh.bindposes;
-
-                var sharedMesh = decimationModifiers[mesh].Mesh.ToSharedMesh();
-                UnityConverter.ToUnityMesh(sharedMesh, outputMesh);
-                outputMesh.RecalculateTangents(); // Mandatory for some shaders
-
-                if (newMeshes != null)
-                    newMeshes.Add(outputMesh);
-
-                return outputMesh;
-            }
-
             // Assign LOD0
             Renderer[] renderers = lodGroup.GetComponentsInChildren<Renderer>();
             lods[0].renderers = renderers;
 
+            Dictionary<Mesh, ConnectedMesh> uniqueMeshes = new Dictionary<Mesh, ConnectedMesh>();
+
+            foreach (Renderer renderer in renderers)
+            {
+                if (renderer is MeshRenderer meshRenderer)
+                {
+                    MeshFilter meshFilter = renderer.gameObject.GetComponent<MeshFilter>();
+                    if (meshFilter)
+                    {
+                        Mesh mesh = meshFilter.sharedMesh;
+                        if (!uniqueMeshes.ContainsKey(mesh))
+                            uniqueMeshes.Add(mesh, ConnectedMesh.Build(UnityConverter.ToSharedMesh(mesh)));
+                    }
+                }
+                else if (renderer is SkinnedMeshRenderer skinnedMeshRenderer)
+                {
+                    Mesh mesh = skinnedMeshRenderer.sharedMesh;
+                    if (!uniqueMeshes.ContainsKey(mesh))
+                        uniqueMeshes.Add(mesh, ConnectedMesh.Build(UnityConverter.ToSharedMesh(mesh)));
+                }
+            }
+
+            SceneDecimator sceneDecimator = new SceneDecimator();
+            sceneDecimator.Initialize(uniqueMeshes.Values);
+
             // Build LODs
             for (int i = 1; i < lods.Length; i++)
             {
+                // Decimates gradually
+                sceneDecimator.DecimateToRatio(lods[i - 1].screenRelativeTransitionHeight);
+
+                Dictionary<Mesh, Mesh> optimizedMeshes = uniqueMeshes.ToDictionary(x => x.Key, x => x.Value.ToSharedMesh().ToUnityMesh());
+
                 List<Renderer> lodRenderers = new List<Renderer>();
 
                 foreach (Renderer renderer in renderers)
@@ -88,7 +85,7 @@ namespace Nanolod
                             MeshFilter mf = gameObject.AddComponent<MeshFilter>();
 
                             mr.sharedMaterials = meshRenderer.sharedMaterials;
-                            mf.sharedMesh = decimateGradualy(meshFilter.sharedMesh, lods[i - 1].screenRelativeTransitionHeight);
+                            mf.sharedMesh = optimizedMeshes[meshFilter.sharedMesh]; // Todo : Don't create new mesh if it's the same (tri count)
 
                             lodRenderers.Add(mr);
                         }
@@ -106,7 +103,7 @@ namespace Nanolod
                         smr.rootBone = skinnedMeshRenderer.rootBone;
 
                         smr.sharedMaterials = skinnedMeshRenderer.sharedMaterials;
-                        smr.sharedMesh = decimateGradualy(skinnedMeshRenderer.sharedMesh, lods[i - 1].screenRelativeTransitionHeight);
+                        smr.sharedMesh = optimizedMeshes[skinnedMeshRenderer.sharedMesh]; // Todo : Don't create new mesh if it's the same (tri count)
 
                         lodRenderers.Add(smr);
                     }
