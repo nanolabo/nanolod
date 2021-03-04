@@ -8,26 +8,28 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+    - name: Checkout nanolod
+      uses: actions/checkout@v2
       with:
-        dotnet-version: 5.0.x
+        path: nanolod/
     - name: Checkout nanomesh
       uses: actions/checkout@master
       with:
         name: nanolabo/nanomesh
         repository: nanolabo/nanomesh
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
-    - uses: actions/upload-artifact@v2
+        path: nanomesh/
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
       with:
-        name: artifact
-        path: Package 
+        dotnet-version: 5.0.x
+    - name: List Files
+      run: ls -R
+    - name: Build
+      run: dotnet build nanolod/Nanolod.sln
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        path: nanolod/Package/
  
  
  
