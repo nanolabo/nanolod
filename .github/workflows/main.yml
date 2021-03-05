@@ -33,9 +33,9 @@ jobs:
       run: dotnet build nanolod/Nanolod.sln
 
     - name: Install Documentation Tools
-      run: sudo apt-get install pandoc texlive-latex-base texlive-fonts-recommended texlive-extra-utils texlive-latex-extra
+      run: sudo apt-get install pandoc texlive-xetex
     - name: Build Documentation
-      run: pandoc -V mainfont='Lato-Regular' nanolod/Manual/Manual.md -o nanolod/Package/Manual.pdf
+      run: pandoc --pdf-engine=xelatex -V mainfont=Lato nanolod/Manual/Manual.md -o nanolod/Package/Manual.pdf
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
