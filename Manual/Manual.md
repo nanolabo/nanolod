@@ -31,8 +31,8 @@
 
 ## How to use
 
-Two ways :
-* Generate LODs at project level from the model inspector
+Two ways :    
+* Generate LODs at project level from the model inspector    
 ![from model](nanolod/Manual/modelimporter.png)
-* Generate LODs at scene level from the LODGroup component
+* Generate LODs at scene level from the LODGroup component    
 ![from LODGroup](nanolod/Manual/lodgroup.jpg)
