@@ -18,18 +18,23 @@ jobs:
         name: nanolabo/nanomesh
         repository: nanolabo/nanomesh
         path: nanomesh/
+
+    - name: List Files
+      run: ls -R
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-    - name: List Files
-      run: ls -R
-    - name: Build
+    - name: Build Binaries
       run: dotnet build nanolod/Nanolod.sln
+
+    - name: Install Documentation Tools
+      run: sudo apt-get install pandoc texlive-latex-base texlive-fonts-recommended texlive-extra-utils texlive-latex-extra
+    - name: Build Documentation
+      run: pandoc nanolod/Manual/Manual.md -o nanolod/Package/Manual.pdf
+
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
         path: nanolod/Package/
- 
- 
- 
