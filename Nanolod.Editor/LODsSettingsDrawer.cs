@@ -53,8 +53,10 @@ namespace Nanolod
             {
                 if (_LodPercentTextStyle == null)
                 {
-                    _LodPercentTextStyle = new GUIStyle();
-                    _LodPercentTextStyle.alignment = TextAnchor.MiddleRight;
+                    _LodPercentTextStyle = new GUIStyle
+                    {
+                        alignment = TextAnchor.MiddleRight
+                    };
                     _LodPercentTextStyle.normal.textColor = EditorGUIUtility.isProSkin ? new Color(.8f, .8f, .8f) : new Color(.1f, .1f, .1f);
                 }
                 return _LodPercentTextStyle;
@@ -89,7 +91,7 @@ namespace Nanolod
                 selectedLodIndex = selectedLodIndexPending;
             }
 
-            var lodsArray = property.FindPropertyRelative("lods");
+            SerializedProperty lodsArray = property.FindPropertyRelative("lods");
             int count = lodsArray.arraySize;
 
             EditorGUILayout.LabelField("LODs", EditorStyles.boldLabel);
@@ -151,7 +153,9 @@ namespace Nanolod
                 }
 
                 if (Event.current.type == EventType.MouseUp)
+                {
                     grabbing = int.MinValue;
+                }
 
                 float mouseDeltaX = 0;
                 if (grabbing != int.MinValue && Event.current.type == EventType.MouseDrag)
@@ -189,7 +193,7 @@ namespace Nanolod
             }
             else
             {
-                var lod = lodsArray.GetArrayElementAtIndex(i);
+                SerializedProperty lod = lodsArray.GetArrayElementAtIndex(i);
                 currentThreshold = lod.FindPropertyRelative("threshold").floatValue;
             }
 
@@ -215,8 +219,10 @@ namespace Nanolod
                 }
             }
 
-            GUIContent title = new GUIContent($" LOD {i}\n " + subInfo);
-            title.tooltip = "Right click to insert or remove an LOD";
+            GUIContent title = new GUIContent($" LOD {i}\n " + subInfo)
+            {
+                tooltip = "Right click to insert or remove an LOD"
+            };
 
             EditorGUIExtensions.GUIDrawRect(labelRect, GetLodColor(i, culled, selectedLodIndex == i),
                 FRAME_COLOR_FOCUS, selectedLodIndex == i ? 3 : 0, title, TextAnchor.MiddleLeft);
@@ -346,7 +352,9 @@ namespace Nanolod
                     SerializedProperty leftLOD = lodsArray.GetArrayElementAtIndex(i);
                     SerializedProperty rightLOD = lodsArray.GetArrayElementAtIndex(i + 1);
                     if (leftLOD.FindPropertyRelative("threshold").doubleValue <= rightLOD.FindPropertyRelative("threshold").doubleValue + 0.027)
+                    {
                         leftLOD.FindPropertyRelative("threshold").doubleValue = rightLOD.FindPropertyRelative("threshold").doubleValue + 0.05;
+                    }
                 }
                 if (i == lodsArray.arraySize - 1)
                 {

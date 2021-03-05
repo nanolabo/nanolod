@@ -18,7 +18,7 @@ namespace Nanolod
 
         public static void GenerateLODs(LODGroup lodGroup, HashSet<Mesh> newMeshes = null)
         {
-            var lods = lodGroup.GetLODs();
+            LOD[] lods = lodGroup.GetLODs();
 
             // Cleanup
             for (int i = 1; i < lods.Length; i++)
@@ -44,14 +44,18 @@ namespace Nanolod
                     {
                         Mesh mesh = meshFilter.sharedMesh;
                         if (!uniqueMeshes.ContainsKey(mesh))
+                        {
                             uniqueMeshes.Add(mesh, ConnectedMesh.Build(UnityConverter.ToSharedMesh(mesh)));
+                        }
                     }
                 }
                 else if (renderer is SkinnedMeshRenderer skinnedMeshRenderer)
                 {
                     Mesh mesh = skinnedMeshRenderer.sharedMesh;
                     if (!uniqueMeshes.ContainsKey(mesh))
+                    {
                         uniqueMeshes.Add(mesh, ConnectedMesh.Build(UnityConverter.ToSharedMesh(mesh)));
+                    }
                 }
             }
 

@@ -16,9 +16,11 @@ namespace Nanolod
         public static OptimizationSettings Create(Editor modelImporterEditor)
         {
             if (!(modelImporterEditor.target is ModelImporter modelImporter))
+            {
                 throw new Exception("Editor must be a ModelImporterEditor !");
+            }
 
-            var optimizationSettings = CreateInstance<OptimizationSettings>();
+            OptimizationSettings optimizationSettings = CreateInstance<OptimizationSettings>();
             optimizationSettings.ModelImporter = modelImporter;
             optimizationSettings.Editor = modelImporterEditor;
             optimizationSettings.lods = new LODs();
@@ -79,7 +81,9 @@ namespace Nanolod
             for (int i = 0; i < ModelImporter.extraUserProperties.Length; i++)
             {
                 if (ModelImporter.extraUserProperties[i].StartsWith("nanolod"))
+                {
                     return i;
+                }
             }
             return -1; // not found
         }
@@ -90,23 +94,27 @@ namespace Nanolod
             {
                 int index = GetExtraPropertyIndex();
                 if (index == -1)
+                {
                     return "nanolod";
+                }
                 else
+                {
                     return ModelImporter.extraUserProperties[index];
+                }
             }
             set
             {
                 int index = GetExtraPropertyIndex();
                 if (index == -1)
                 {
-                    var props = ModelImporter.extraUserProperties;
+                    string[] props = ModelImporter.extraUserProperties;
                     index = props.Length;
                     CollectionExtensions.Append(ref props, value);
                     ModelImporter.extraUserProperties = props;
                 }
                 else
                 {
-                    var props = ModelImporter.extraUserProperties;
+                    string[] props = ModelImporter.extraUserProperties;
                     props[index] = value;
                     ModelImporter.extraUserProperties = props;
                 }

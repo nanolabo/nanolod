@@ -30,7 +30,10 @@ namespace Nanolod
         public static void Append<T>(ref T[] array1, T[] array2)
         {
             if (array2.Length == 0)
+            {
                 return;
+            }
+
             int array1OriginalLength = array1.Length;
             Array.Resize<T>(ref array1, array1OriginalLength + array2.Length);
             Array.Copy(array2, 0, array1, array1OriginalLength, array2.Length);
@@ -44,9 +47,21 @@ namespace Nanolod
         /// <param name="index"></param>
         public static void RemoveAt<T>(ref T[] array, int index)
         {
-            if (index < 0 || index > array.Length - 1) return;
-            if (index > 0) Array.Copy(array, 0, array, 0, index);
-            if (index < array.Length - 1) Array.Copy(array, index + 1, array, index, array.Length - index - 1);
+            if (index < 0 || index > array.Length - 1)
+            {
+                return;
+            }
+
+            if (index > 0)
+            {
+                Array.Copy(array, 0, array, 0, index);
+            }
+
+            if (index < array.Length - 1)
+            {
+                Array.Copy(array, index + 1, array, index, array.Length - index - 1);
+            }
+
             Array.Resize(ref array, array.Length - 1);
         }
 
@@ -59,7 +74,11 @@ namespace Nanolod
         /// <param name="index"></param>
         public static void Insert<T>(ref T[] array, T item, int index)
         {
-            if (index < 0 || index > array.Length - 1) return;
+            if (index < 0 || index > array.Length - 1)
+            {
+                return;
+            }
+
             Array.Resize(ref array, array.Length + 1);
             Array.Copy(array, index, array, index + 1, array.Length - index - 1);
             array[index] = item;
@@ -123,7 +142,10 @@ namespace Nanolod
             Array newArray = Array.CreateInstance(elementType, newSize);
             int preserveLength = Math.Min(oldSize, newSize);
             if (preserveLength > 0)
+            {
                 Array.Copy(oldArray, newArray, preserveLength);
+            }
+
             return newArray;
         }
 
@@ -136,7 +158,9 @@ namespace Nanolod
         public static IEnumerable<T> ToEnumerable<T>(this IEnumerator enumerator)
         {
             while (enumerator.MoveNext())
+            {
                 yield return (T)enumerator.Current;
+            }
         }
     }
 }

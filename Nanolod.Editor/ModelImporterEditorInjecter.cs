@@ -48,21 +48,27 @@ namespace Nanolod
         private static void Inject(Editor editor)
         {
             if (editor == null)
+            {
                 return;
+            }
 
             if (editor == Current?.Editor)
+            {
                 return;
+            }
 
             if (!editor.GetType().IsAssignableFrom(_modelImporterEditorType))
+            {
                 return;
+            }
 
             Current = OptimizationSettings.Create(editor);
 
             SerializedObject serializedObject = new SerializedObject(Current);
             SerializedProperty serializedPropertyMyInt = serializedObject.FindProperty("lods");
 
-            var tabs = (Array)_assetTabbedImporterType.GetField("m_Tabs", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(editor);
-            var modelTab = tabs.GetValue(0);
+            Array tabs = (Array)_assetTabbedImporterType.GetField("m_Tabs", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(editor);
+            object modelTab = tabs.GetValue(0);
             modelTab.GetType().GetField("m_SortHierarchyByName", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(modelTab, serializedPropertyMyInt);
 
             editor.Repaint();

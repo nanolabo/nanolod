@@ -26,7 +26,9 @@ namespace Nanolod
             GUIStyle rectStyle = new GUIStyle();
 
             if (color != Color.white && color != Color.gray)
+            {
                 rectStyle.normal.textColor = Color.white;
+            }
 
             rectStyle.clipping = TextClipping.Clip;
             rectStyle.border = new RectOffset(-borderThickness, -borderThickness, -borderThickness, -borderThickness);

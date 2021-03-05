@@ -9,9 +9,11 @@ namespace Nanolod
     {
         private void OnPostprocessModel(GameObject gameObject)
         {
-            var settings = ModelImporterEditorInjecter.Current;
+            OptimizationSettings settings = ModelImporterEditorInjecter.Current;
             if (settings == null || settings.lods.lods.Length == 0)
+            {
                 return;
+            }
 
             LODGroup lodGroup = gameObject.AddComponent<LODGroup>();
 
