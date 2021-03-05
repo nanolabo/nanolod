@@ -22,6 +22,9 @@ jobs:
     - name: List Files
       run: ls -R
 
+    - name: List Fonts
+      run: fc-list
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
@@ -32,7 +35,7 @@ jobs:
     - name: Install Documentation Tools
       run: sudo apt-get install pandoc texlive-latex-base texlive-fonts-recommended texlive-extra-utils texlive-latex-extra
     - name: Build Documentation
-      run: pandoc nanolod/Manual/Manual.md -o nanolod/Package/Manual.pdf
+      run: pandoc -V mainfont='Ubuntu' nanolod/Manual/Manual.md -o nanolod/Package/Manual.pdf
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
