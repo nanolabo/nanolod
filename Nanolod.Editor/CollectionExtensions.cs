@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace Nanolod  {
+namespace Nanolod
+{
 
-    public static class CollectionExtensions {
+    public static class CollectionExtensions
+    {
 
         /// <summary>
         /// Adds an item at the end of a given array, resizing the array to fit it.
@@ -13,7 +15,8 @@ namespace Nanolod  {
         /// <typeparam name="T">Array element type</typeparam>
         /// <param name="array">Array</param>
         /// <param name="item">Item to append</param>
-        public static void Append<T>(ref T[] array, T item) {
+        public static void Append<T>(ref T[] array, T item)
+        {
             Array.Resize(ref array, array.Length + 1);
             array[array.Length - 1] = item;
         }
@@ -24,7 +27,8 @@ namespace Nanolod  {
         /// <typeparam name="T"></typeparam>
         /// <param name="array1">Array</param>
         /// <param name="array2">Array to append</param>
-        public static void Append<T>(ref T[] array1, T[] array2) {
+        public static void Append<T>(ref T[] array1, T[] array2)
+        {
             if (array2.Length == 0)
                 return;
             int array1OriginalLength = array1.Length;
@@ -38,7 +42,8 @@ namespace Nanolod  {
         /// <typeparam name="T"></typeparam>
         /// <param name="array"></param>
         /// <param name="index"></param>
-        public static void RemoveAt<T>(ref T[] array, int index) {
+        public static void RemoveAt<T>(ref T[] array, int index)
+        {
             if (index < 0 || index > array.Length - 1) return;
             if (index > 0) Array.Copy(array, 0, array, 0, index);
             if (index < array.Length - 1) Array.Copy(array, index + 1, array, index, array.Length - index - 1);
@@ -52,7 +57,8 @@ namespace Nanolod  {
         /// <param name="array"></param>
         /// <param name="item"></param>
         /// <param name="index"></param>
-        public static void Insert<T>(ref T[] array, T item, int index) {
+        public static void Insert<T>(ref T[] array, T item, int index)
+        {
             if (index < 0 || index > array.Length - 1) return;
             Array.Resize(ref array, array.Length + 1);
             Array.Copy(array, index, array, index + 1, array.Length - index - 1);
@@ -70,14 +76,16 @@ namespace Nanolod  {
         public static T[] Slice<T>(this T[] source, int start, int end)
         {
             // Handles negative ends.
-            if (end < 0) {
+            if (end < 0)
+            {
                 end = source.Length + end;
             }
             int len = end - start;
 
             // Return new array.
             T[] res = new T[len];
-            for (int i = 0; i < len; i++) {
+            for (int i = 0; i < len; i++)
+            {
                 res[i] = source[i + start];
             }
             return res;
@@ -89,10 +97,12 @@ namespace Nanolod  {
         /// <typeparam name="T"></typeparam>
         /// <param name="arrays">Source arrays</param>
         /// <returns></returns>
-        public static T[] CreateArrayFromArrays<T>(params T[][] arrays) {
+        public static T[] CreateArrayFromArrays<T>(params T[][] arrays)
+        {
             T[] array = new T[arrays.Sum(x => x.Length)];
             int pos = 0;
-            for (int i = 0; i < arrays.Length; i++) {
+            for (int i = 0; i < arrays.Length; i++)
+            {
                 Array.Copy(arrays[i], 0, array, pos, arrays[i].Length);
                 pos += arrays[i].Length;
             }
@@ -106,7 +116,8 @@ namespace Nanolod  {
         /// <param name="oldArray"></param>
         /// <param name="newSize"></param>
         /// <returns></returns>
-        public static Array Resize(this Array oldArray, int newSize) {
+        public static Array Resize(this Array oldArray, int newSize)
+        {
             int oldSize = oldArray.Length;
             Type elementType = oldArray.GetType().GetElementType();
             Array newArray = Array.CreateInstance(elementType, newSize);
@@ -122,7 +133,8 @@ namespace Nanolod  {
         /// <typeparam name="T"></typeparam>
         /// <param name="enumerator"></param>
         /// <returns></returns>
-        public static IEnumerable<T> ToEnumerable<T>(this IEnumerator enumerator) {
+        public static IEnumerable<T> ToEnumerable<T>(this IEnumerator enumerator)
+        {
             while (enumerator.MoveNext())
                 yield return (T)enumerator.Current;
         }

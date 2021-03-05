@@ -1,12 +1,12 @@
-﻿using UnityEngine;
-using UVector3 = UnityEngine.Vector3;
-using UVector2 = UnityEngine.Vector2;
-using UBoneWeight = UnityEngine.BoneWeight;
-using NVector3 = Nanomesh.Vector3;
-using NVector2F = Nanomesh.Vector2F;
-using NVector3F = Nanomesh.Vector3F;
+﻿using Nanomesh;
+using UnityEngine;
 using NBoneWeight = Nanomesh.BoneWeight;
-using Nanomesh;
+using NVector2F = Nanomesh.Vector2F;
+using NVector3 = Nanomesh.Vector3;
+using NVector3F = Nanomesh.Vector3F;
+using UBoneWeight = UnityEngine.BoneWeight;
+using UVector2 = UnityEngine.Vector2;
+using UVector3 = UnityEngine.Vector3;
 
 namespace Nanolod
 {
@@ -82,7 +82,8 @@ namespace Nanolod
 
             UBoneWeight[] boneWeights = new UBoneWeight[sharedMesh.boneWeights.Length];
             for (int i = 0; i < boneWeights.Length; i++)
-                boneWeights[i] = new UBoneWeight {
+                boneWeights[i] = new UBoneWeight
+                {
                     boneIndex0 = sharedMesh.boneWeights[i].index0,
                     boneIndex1 = sharedMesh.boneWeights[i].index1,
                     boneIndex2 = sharedMesh.boneWeights[i].index2,

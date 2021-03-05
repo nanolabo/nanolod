@@ -86,7 +86,8 @@ namespace Nanolod
 
         private string ExtraPropertyValue
         {
-            get {
+            get
+            {
                 int index = GetExtraPropertyIndex();
                 if (index == -1)
                     return "nanolod";

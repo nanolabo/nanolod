@@ -7,8 +7,8 @@ namespace Nanolod
     [CustomPropertyDrawer(typeof(LODs))]
     public class LODsSettingsDrawer : PropertyDrawer
     {
-        const int SPLITTER_WIDTH = 12;
-        const float MINIMUM_LOD_RANGE = 0.01f;
+        private const int SPLITTER_WIDTH = 12;
+        private const float MINIMUM_LOD_RANGE = 0.01f;
 
         public static readonly Color[] LOD_COLORS_FOCUS = new Color[] {
             new Color(0.38039f, 0.49020f, 0.01961f),

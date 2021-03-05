@@ -13,13 +13,15 @@ namespace Nanolod
         public static Color EditorColor => EditorGUIUtility.isProSkin ? EditorColorPro : EditorColorBasic;
         public static Color EditorColorLight => EditorGUIUtility.isProSkin ? EditorColorProLight : EditorColorBasicLight;
 
-        public static void GUIDrawRect(Rect position, Color color, int borderThickness = 0, string title = "") {
+        public static void GUIDrawRect(Rect position, Color color, int borderThickness = 0, string title = "")
+        {
             Color tmp = color;
             tmp.a = 1;
             GUIDrawRect(position, color, tmp, borderThickness, new GUIContent(title), TextAnchor.MiddleCenter);
         }
 
-        public static void GUIDrawRect(Rect position, Color color, Color borderColor, int borderThickness, GUIContent text, TextAnchor rectTextAnchor) {
+        public static void GUIDrawRect(Rect position, Color color, Color borderColor, int borderThickness, GUIContent text, TextAnchor rectTextAnchor)
+        {
 
             GUIStyle rectStyle = new GUIStyle();
 
@@ -33,7 +35,8 @@ namespace Nanolod
 
             Rect innerRect = position;
 
-            if (borderThickness > 0) {
+            if (borderThickness > 0)
+            {
                 EditorGUI.DrawRect(position, borderColor);
                 innerRect = new Rect(position.x + borderThickness, position.y + borderThickness, position.width - borderThickness * 2, position.height - borderThickness * 2);
             }

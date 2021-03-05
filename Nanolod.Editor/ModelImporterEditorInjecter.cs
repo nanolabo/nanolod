@@ -7,8 +7,8 @@ namespace Nanolod
     [InitializeOnLoad]
     public static class ModelImporterEditorInjecter
     {
-        private static Type _assetTabbedImporterType;
-        private static Type _modelImporterEditorType;
+        private static readonly Type _assetTabbedImporterType;
+        private static readonly Type _modelImporterEditorType;
 
         static ModelImporterEditorInjecter()
         {
