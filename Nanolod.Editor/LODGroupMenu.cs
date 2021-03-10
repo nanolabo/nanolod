@@ -123,6 +123,8 @@ namespace Nanolod
                         smr.sharedMaterials = skinnedMeshRenderer.sharedMaterials;
                         smr.sharedMesh = optimizedMesh;
 
+                        optimizedMesh.bindposes = originalMesh.bindposes; // Copy poses
+
                         newMeshes.Add(optimizedMesh);
 
                         lodRenderers.Add(smr);
