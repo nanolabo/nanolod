@@ -29,6 +29,8 @@ namespace Nanolod
                 }
             }
 
+            newMeshes ??= new HashSet<Mesh>();
+
             // Assign LOD0
             Renderer[] renderers = lodGroup.GetComponentsInChildren<Renderer>();
             lods[0].renderers = renderers;
