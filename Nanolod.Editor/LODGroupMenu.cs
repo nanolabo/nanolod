@@ -47,7 +47,7 @@ namespace Nanolod
                         Mesh mesh = meshFilter.sharedMesh;
                         if (!uniqueMeshes.ContainsKey(mesh))
                         {
-                            uniqueMeshes.Add(mesh, ConnectedMesh.Build(UnityConverter.ToSharedMesh(mesh)));
+                            uniqueMeshes.TryAdd(mesh, m => UnityConverter.ToSharedMesh(m).ToConnectedMesh());
                         }
                     }
                 }
@@ -56,9 +56,14 @@ namespace Nanolod
                     Mesh mesh = skinnedMeshRenderer.sharedMesh;
                     if (!uniqueMeshes.ContainsKey(mesh))
                     {
-                        uniqueMeshes.Add(mesh, ConnectedMesh.Build(UnityConverter.ToSharedMesh(mesh)));
+                        uniqueMeshes.TryAdd(mesh, m => UnityConverter.ToSharedMesh(m).ToConnectedMesh());
                     }
                 }
+            }
+
+            foreach (var uniqueMesh in uniqueMeshes)
+            {
+                uniqueMesh.Value.MergePositions(0.0001);
             }
 
             SceneDecimator sceneDecimator = new SceneDecimator();
