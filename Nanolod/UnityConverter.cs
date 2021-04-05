@@ -31,7 +31,7 @@ namespace Nanolod
             List<AttributeDefinition> attributeDefinitions = new List<AttributeDefinition>();
 
             UVector3[] normals = mesh.normals;
-            if (normals != null)
+            if (normals != null && normals.Length > 0)
             {
                 int k = attributeDefinitions.Count;
                 attributeDefinitions.Add(new AttributeDefinition(AttributeType.Normals));
@@ -43,7 +43,7 @@ namespace Nanolod
             }
 
             UVector2[] uvs = mesh.uv;
-            if (uvs != null)
+            if (uvs != null && uvs.Length > 0)
             {
                 int k = attributeDefinitions.Count;
                 attributeDefinitions.Add(new AttributeDefinition(AttributeType.UVs));
@@ -55,12 +55,12 @@ namespace Nanolod
             }
 
             UBoneWeight[] boneWeights = mesh.boneWeights;
-            if (boneWeights != null)
+            if (boneWeights != null && boneWeights.Length > 0)
             {
                 int k = attributeDefinitions.Count;
                 attributeDefinitions.Add(new AttributeDefinition(AttributeType.BoneWeights));
                 attributes = attributes.AddAttributeType<NBoneWeight>();
-                for (int i = 0; i < uvs.Length; i++)
+                for (int i = 0; i < boneWeights.Length; i++)
                 {
                     attributes[i] = attributes[i].Set(k, new NBoneWeight(
                         boneWeights[i].boneIndex0,
