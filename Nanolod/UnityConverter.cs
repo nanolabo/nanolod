@@ -5,9 +5,11 @@ using NBoneWeight = Nanomesh.BoneWeight;
 using NVector2F = Nanomesh.Vector2F;
 using NVector3 = Nanomesh.Vector3;
 using NVector3F = Nanomesh.Vector3F;
+using NColor32 = Nanomesh.Color32;
 using UBoneWeight = UnityEngine.BoneWeight;
 using UVector2 = UnityEngine.Vector2;
 using UVector3 = UnityEngine.Vector3;
+using UColor32 = UnityEngine.Color32;
 
 namespace Nanolod
 {
@@ -42,15 +44,111 @@ namespace Nanolod
                 }
             }
 
-            UVector2[] uvs = mesh.uv;
-            if (uvs != null && uvs.Length > 0)
+            UVector2[] uvs0 = mesh.uv;
+            if (uvs0 != null && uvs0.Length > 0)
             {
                 int k = attributeDefinitions.Count;
                 attributeDefinitions.Add(new AttributeDefinition(AttributeType.UVs));
                 attributes = attributes.AddAttributeType<NVector2F>();
-                for (int i = 0; i < uvs.Length; i++)
+                for (int i = 0; i < uvs0.Length; i++)
                 {
-                    attributes[i] = attributes[i].Set(k, new NVector2F(normals[i].x, normals[i].y));
+                    attributes[i] = attributes[i].Set(k, new NVector2F(uvs0[i].x, uvs0[i].y));
+                }
+            }
+
+            UVector2[] uvs2 = mesh.uv2;
+            if (uvs2 != null && uvs2.Length > 0)
+            {
+                int k = attributeDefinitions.Count;
+                attributeDefinitions.Add(new AttributeDefinition(AttributeType.UVs));
+                attributes = attributes.AddAttributeType<NVector2F>();
+                for (int i = 0; i < uvs2.Length; i++)
+                {
+                    attributes[i] = attributes[i].Set(k, new NVector2F(uvs2[i].x, uvs2[i].y));
+                }
+            }
+
+            UVector2[] uvs3 = mesh.uv3;
+            if (uvs3 != null && uvs3.Length > 0)
+            {
+                int k = attributeDefinitions.Count;
+                attributeDefinitions.Add(new AttributeDefinition(AttributeType.UVs));
+                attributes = attributes.AddAttributeType<NVector2F>();
+                for (int i = 0; i < uvs3.Length; i++)
+                {
+                    attributes[i] = attributes[i].Set(k, new NVector2F(uvs3[i].x, uvs3[i].y));
+                }
+            }
+
+            UVector2[] uvs4 = mesh.uv4;
+            if (uvs4 != null && uvs4.Length > 0)
+            {
+                int k = attributeDefinitions.Count;
+                attributeDefinitions.Add(new AttributeDefinition(AttributeType.UVs));
+                attributes = attributes.AddAttributeType<NVector2F>();
+                for (int i = 0; i < uvs4.Length; i++)
+                {
+                    attributes[i] = attributes[i].Set(k, new NVector2F(uvs4[i].x, uvs4[i].y));
+                }
+            }
+
+            UVector2[] uvs5 = mesh.uv5;
+            if (uvs5 != null && uvs5.Length > 0)
+            {
+                int k = attributeDefinitions.Count;
+                attributeDefinitions.Add(new AttributeDefinition(AttributeType.UVs));
+                attributes = attributes.AddAttributeType<NVector2F>();
+                for (int i = 0; i < uvs5.Length; i++)
+                {
+                    attributes[i] = attributes[i].Set(k, new NVector2F(uvs5[i].x, uvs5[i].y));
+                }
+            }
+
+            UVector2[] uvs6 = mesh.uv6;
+            if (uvs6 != null && uvs6.Length > 0)
+            {
+                int k = attributeDefinitions.Count;
+                attributeDefinitions.Add(new AttributeDefinition(AttributeType.UVs));
+                attributes = attributes.AddAttributeType<NVector2F>();
+                for (int i = 0; i < uvs6.Length; i++)
+                {
+                    attributes[i] = attributes[i].Set(k, new NVector2F(uvs6[i].x, uvs6[i].y));
+                }
+            }
+
+            UVector2[] uvs7 = mesh.uv7;
+            if (uvs7 != null && uvs7.Length > 0)
+            {
+                int k = attributeDefinitions.Count;
+                attributeDefinitions.Add(new AttributeDefinition(AttributeType.UVs));
+                attributes = attributes.AddAttributeType<NVector2F>();
+                for (int i = 0; i < uvs7.Length; i++)
+                {
+                    attributes[i] = attributes[i].Set(k, new NVector2F(uvs7[i].x, uvs7[i].y));
+                }
+            }
+
+            UVector2[] uvs8 = mesh.uv8;
+            if (uvs8 != null && uvs8.Length > 0)
+            {
+                int k = attributeDefinitions.Count;
+                attributeDefinitions.Add(new AttributeDefinition(AttributeType.UVs));
+                attributes = attributes.AddAttributeType<NVector2F>();
+                for (int i = 0; i < uvs8.Length; i++)
+                {
+                    attributes[i] = attributes[i].Set(k, new NVector2F(uvs8[i].x, uvs8[i].y));
+                }
+            }
+
+            UColor32[] colors = mesh.colors32;
+            if (colors != null && colors.Length > 0)
+            {
+                int k = attributeDefinitions.Count;
+                attributeDefinitions.Add(new AttributeDefinition(AttributeType.Colors, 0.0001));
+                attributes = attributes.AddAttributeType<NColor32>();
+                for (int i = 0; i < colors.Length; i++)
+                {
+                    attributes[i] = attributes[i].Set(k, new NColor32(colors[i].r, colors[i].g, colors[i].b, colors[i].a));
                 }
             }
 
