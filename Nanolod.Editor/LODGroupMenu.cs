@@ -25,11 +25,12 @@ namespace Nanolod
             {
                 foreach (Renderer renderer in lods[i].renderers)
                 {
-                    UnityEngine.Object.DestroyImmediate(renderer.gameObject);
+                    Object.DestroyImmediate(renderer.gameObject);
                 }
             }
 
-            newMeshes ??= new HashSet<Mesh>();
+            if (newMeshes == null)
+                newMeshes = new HashSet<Mesh>();
 
             // Assign LOD0
             Renderer[] renderers = lodGroup.GetComponentsInChildren<Renderer>();

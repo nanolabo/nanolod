@@ -56,6 +56,7 @@ namespace Nanolod
                 }
             }
 
+            /*
             UVector2[] uvs2 = mesh.uv2;
             if (uvs2 != null && uvs2.Length > 0)
             {
@@ -151,6 +152,7 @@ namespace Nanolod
                     attributes[i] = attributes[i].Set(k, new NColor32(colors[i].r, colors[i].g, colors[i].b, colors[i].a));
                 }
             }
+            */
 
             UBoneWeight[] boneWeights = mesh.boneWeights;
             if (boneWeights != null && boneWeights.Length > 0)
@@ -196,6 +198,8 @@ namespace Nanolod
 
         public static void ToUnityMesh(this SharedMesh sharedMesh, Mesh mesh)
         {
+            mesh.Clear();
+
             mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
 
             UVector3[] vertices = new UVector3[sharedMesh.positions.Length];
@@ -260,6 +264,8 @@ namespace Nanolod
             {
                 mesh.SetSubMesh(i, new UnityEngine.Rendering.SubMeshDescriptor(sharedMesh.groups[i].firstIndex, sharedMesh.groups[i].indexCount));
             }
+
+            mesh.RecalculateTangents();
         }
     }
 }
