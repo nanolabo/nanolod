@@ -40,3 +40,5 @@ There are currently two ways to generate LODs
 ### Generate LODs at scene level from the LODGroup component
 
 ![from LODGroup](nanolod/Manual/lodgroup.png)
+
+Checkout the two samples to see the plugin in action !

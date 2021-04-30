@@ -23,8 +23,8 @@
   </ItemGroup>
 
   <Target Name="CopyToUnityPackage" AfterTargets="AfterBuild">
-    <Copy SourceFiles="$(TargetDir)Nanolod.Editor.dll" DestinationFolder="$(SolutionDir)Package" />
-    <Copy SourceFiles="$(TargetDir)Nanolod.Editor.pdb" DestinationFolder="$(SolutionDir)Package" />
+    <Copy SourceFiles="$(TargetDir)Nanolod.Editor.dll" DestinationFolder="$(SolutionDir)Package/Binaries" />
+    <Copy SourceFiles="$(TargetDir)Nanolod.Editor.pdb" DestinationFolder="$(SolutionDir)Package/Binaries" />
   </Target>
 
 </Project>

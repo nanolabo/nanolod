@@ -26,6 +26,8 @@ namespace Nanolod
 
         public static SharedMesh ToSharedMesh(this Mesh mesh)
         {
+            System.Console.WriteLine($"Vertex count:{mesh.vertexCount}");
+            
             UVector3[] vertices = mesh.vertices;
 
             SharedMesh sharedMesh = new SharedMesh();
