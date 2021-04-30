@@ -25,7 +25,8 @@ namespace Nanolod
             {
                 foreach (Renderer renderer in lods[i].renderers)
                 {
-                    Object.DestroyImmediate(renderer.gameObject);
+                    if (renderer != null)
+                        Object.DestroyImmediate(renderer.gameObject);
                 }
             }
 
