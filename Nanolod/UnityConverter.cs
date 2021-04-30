@@ -1,11 +1,13 @@
 ﻿using Nanomesh;
 using System.Collections.Generic;
 using UnityEngine;
+
 using NBoneWeight = Nanomesh.BoneWeight;
 using NVector2F = Nanomesh.Vector2F;
 using NVector3 = Nanomesh.Vector3;
 using NVector3F = Nanomesh.Vector3F;
 using NColor32 = Nanomesh.Color32;
+
 using UBoneWeight = UnityEngine.BoneWeight;
 using UVector2 = UnityEngine.Vector2;
 using UVector3 = UnityEngine.Vector3;
@@ -63,7 +65,6 @@ namespace Nanolod
                 }
             }
 
-            /*
             UVector2[] uvs2 = mesh.uv2;
             if (uvs2 != null && uvs2.Length > 0)
             {
@@ -76,6 +77,7 @@ namespace Nanolod
                 }
             }
 
+            /*
             UVector2[] uvs3 = mesh.uv3;
             if (uvs3 != null && uvs3.Length > 0)
             {
@@ -147,6 +149,7 @@ namespace Nanolod
                     attributes[i] = attributes[i].Set(k, new NVector2F(uvs8[i].x, uvs8[i].y));
                 }
             }
+            */
 
             UColor32[] colors = mesh.colors32;
             if (colors != null && colors.Length > 0)
@@ -159,7 +162,6 @@ namespace Nanolod
                     attributes[i] = attributes[i].Set(k, new NColor32(colors[i].r, colors[i].g, colors[i].b, colors[i].a));
                 }
             }
-            */
 
             UBoneWeight[] boneWeights = mesh.boneWeights;
             if (boneWeights != null && boneWeights.Length > 0)
