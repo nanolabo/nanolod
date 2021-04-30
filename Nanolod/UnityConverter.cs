@@ -15,6 +15,13 @@ namespace Nanolod
 {
     public static class UnityConverter
     {
+        static UnityConverter()
+        {
+#if DEBUG
+            System.Console.SetOut(new UnityDebugWriter());
+#endif
+        }
+
         public static SharedMesh ToSharedMesh(this Mesh mesh)
         {
             UVector3[] vertices = mesh.vertices;
