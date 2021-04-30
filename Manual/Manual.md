@@ -9,25 +9,20 @@
 * Generate LODs at project level from the model inspector
 * Generate LODs at scene level from the LODGroup component
 * Target polycount is reached globally instead of per-mesh
+* Manages mesh instances (does not create duplicates for a mesh instanced more than once)
 * Preserves animations (bones weights)
 * Preserves normals
-* Preverves UVs (channel 0)
+* Preverves UVs (channel 0 for textures and 1 for lightmaps)
 * Preserves borders
+* Preserves vertex colors
+* Also works at runtime !
 
 ## Current limitations / Known issues
 
-* This is a PREVIEW version (it might not be very stable)
-* There is no parametrization for generated LODs. The polycount ratio for a given LOD is the LOD threshold (eg: LOD at 50% has 50 polycount)
-* Vertex colors are not supported
+* This is the first version (it might not be very stable, updates will come)
+* There is no parametrization for generated LODs. The polycount ratio for a given LOD is the LOD threshold (eg: LOD at 50% has 50% polycount)
 * Tangents are not kept (but recomputed from normals)
-* UV channels other than 0 are not supported
-
-## How to install
-
-* In Unity, open package manager (Window / Package Manager)
-* Click "+", and "Add package from disk..."
-* Select "package.json" from Nanolod
-* Enjoy :)
+* For now computation is single-threaded
 
 ## How to use
 
