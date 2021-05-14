@@ -150,7 +150,7 @@ namespace Nanolod.Calibration
         {
             var output = new Dictionary<string, float>();
             output["NormalWeight"] = Random.Range(0f, 100f);
-            output["MergeThreshold"] = Random.Range(0.00001f, 0.1f);
+            //output["MergeThreshold"] = Random.Range(0.00001f, 0.1f);
             output["MergeNormalsThreshold"] = Random.Range(5f, 140f) * MathF.PI / 180f;
             output["UseEdgeLength"] = Random.Range(0f, 1f);
             //output["UpdateFarNeighbors"] = Random.Range(0f, 0.75f);
@@ -217,7 +217,7 @@ namespace Nanolod.Calibration
                 // Important step :
                 // We merge positions to increase chances of having correct topology information
                 // We merge attributes in order to make interpolation properly operate on every face
-                connectedMesh.MergePositions(variables["MergeThreshold"]);
+                connectedMesh.MergePositions(0.01f/*variables["MergeThreshold"]*/);
                 connectedMesh.MergeAttributes();
                 connectedMesh.Compact();
             }
