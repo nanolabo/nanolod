@@ -23,18 +23,23 @@ namespace Nanolod
 
             LODGroupMenu.GenerateLODs(lodGroup, newMeshes);
 
-            int i = 0;
-
-            string directory = "Packages/com.nanolabo.nanolod/Cache";
-            string path = Path.Combine(directory, $"{gameObject.GetInstanceID()}.asset");
-
-            Directory.CreateDirectory(Path.GetFullPath(path));
+            string pathToAsmDef = AssetDatabase.GUIDToAssetPath("77926c82de2364debab5082355addfb4");
+            string directory = Path.GetDirectoryName(pathToAsmDef);;
+            string path = Path.Combine(directory, "Cache", $"{gameObject.GetInstanceID()}.asset");
+            string fullPath = Path.GetFullPath(path);
+            
+            Directory.CreateDirectory(fullPath);
+            
+            if (AssetDatabase.DeleteAsset(path))
+                AssetDatabase.Refresh();
 
             AssetDatabase.CreateAsset(settings, path);
 
+            int i = 0;
+            
             foreach (Mesh newMesh in newMeshes)
             {
-                newMesh.name = "mesh_" + i;
+                newMesh.name = "mesh_" + i++;
                 AssetDatabase.AddObjectToAsset(newMesh, path);
             }
 
