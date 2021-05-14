@@ -5,7 +5,6 @@ using System.Linq;
 
 namespace Nanolod
 {
-
     public static class CollectionExtensions
     {
 
