@@ -28,6 +28,8 @@ namespace Nanolod.Calibration
         [Range(1, 10)]
         public int mutationsPerIteration = 1;
 
+        public float mutationMaximum = 10f;
+
         public MetaHeuristicAlgo metaHeuristicAlgo;
 
         private List<Mesh> _originalMeshes;
