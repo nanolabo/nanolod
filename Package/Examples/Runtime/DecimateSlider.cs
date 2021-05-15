@@ -87,7 +87,7 @@ public class DecimateSlider : MonoBehaviour
             // Important step :
             // We merge positions to increase chances of having correct topology information
             // We merge attributes in order to make interpolation properly operate on every face
-            connectedMesh.MergePositions(0);
+            connectedMesh.MergePositions(0.0001f);
             connectedMesh.MergeAttributes();
             connectedMesh.Compact();
         }

@@ -66,6 +66,8 @@ namespace Nanolod
             foreach (KeyValuePair<Mesh, ConnectedMesh> uniqueMesh in uniqueMeshes)
             {
                 uniqueMesh.Value.MergePositions(0.0001);
+                uniqueMesh.Value.MergeAttributes();
+                uniqueMesh.Value.Compact();
             }
 
             SceneDecimator sceneDecimator = new SceneDecimator();
