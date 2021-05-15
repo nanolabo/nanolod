@@ -45,7 +45,7 @@ namespace Nanolod
             if (normals != null && normals.Length > 0)
             {
                 int k = attributeDefinitions.Count;
-                attributeDefinitions.Add(new AttributeDefinition(AttributeType.Normals, 198.9115f));
+                attributeDefinitions.Add(new AttributeDefinition(AttributeType.Normals, 222.0194f));
                 attributes = attributes.AddAttributeType<NVector3F>();
                 for (int i = 0; i < normals.Length; i++)
                 {
@@ -57,7 +57,7 @@ namespace Nanolod
             if (uvs1 != null && uvs1.Length > 0)
             {
                 int k = attributeDefinitions.Count;
-                attributeDefinitions.Add(new AttributeDefinition(AttributeType.UVs, 147.96193f, 0));
+                attributeDefinitions.Add(new AttributeDefinition(AttributeType.UVs, 90.21234f, 0));
                 attributes = attributes.AddAttributeType<NVector2F>();
                 for (int i = 0; i < uvs1.Length; i++)
                 {
@@ -69,7 +69,7 @@ namespace Nanolod
             if (uvs2 != null && uvs2.Length > 0)
             {
                 int k = attributeDefinitions.Count;
-                attributeDefinitions.Add(new AttributeDefinition(AttributeType.UVs, 8.98731f, 1));
+                attributeDefinitions.Add(new AttributeDefinition(AttributeType.UVs, 9.021234f, 1));
                 attributes = attributes.AddAttributeType<NVector2F>();
                 for (int i = 0; i < uvs2.Length; i++)
                 {

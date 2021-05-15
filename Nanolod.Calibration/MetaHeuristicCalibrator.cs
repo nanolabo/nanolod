@@ -126,7 +126,7 @@ namespace Nanolod.Calibration
                 StringBuilder strbldr = new StringBuilder();
                 foreach (KeyValuePair<string, float> pair in bestIndividual)
                 {
-                    strbldr.Append($"{pair.Key} = {pair.Value}\n");
+                    strbldr.Append($"{pair.Key}: {pair.Value}, ");
                 }
                 Debug.Log(strbldr);
 
@@ -138,26 +138,38 @@ namespace Nanolod.Calibration
 
         private double GetFitness(Dictionary<string, float> values)
         {
+            var sw = System.Diagnostics.Stopwatch.StartNew();
             SetDecimation(polycountTarget, values);
+            var timeDecim = sw.Elapsed.TotalMilliseconds;
 
             Texture2D textureDecimated = CalibrationUtils.CaptureScreenshot(_camera, 1000, 1000);
             Digest modified = ImagePhash.ComputeDigest(CalibrationUtils.ToLuminanceImage(textureDecimated));
+            var timePhash = sw.Elapsed.TotalMilliseconds;
 
-            return 1f - ImagePhash.GetCrossCorrelation(_originalDigest, modified);
+            var fitness = 1f - ImagePhash.GetCrossCorrelation(_originalDigest, modified);
+            var timeCorrelate = sw.Elapsed.TotalMilliseconds;
+
+            sw.Stop();
+
+            Debug.Log($"| Decim:{timeDecim}, Phash:{timePhash}, Correlate:{timeCorrelate}");
+
+            return fitness;
         }
 
         private Dictionary<string, float> GetInitialState()
         {
+            // Latest metaheuristic results
+            // => NormalWeight: 222.0194, UVsWeight: 90.21234, MergeNormalsThreshold: 348.8453, EdgeBorderPenalty: 1027.007, CollapseToMidpointPenalty: 0.4716252,
             var output = new Dictionary<string, float>();
-            output["NormalWeight"] = 198.9115f;
-            output["UVsWeight"] = 147.96193f;
+            output["NormalWeight"] = 222.0194f;
+            output["UVsWeight"] = 90.21234f;
             //output["MergeThreshold"] = Random.Range(0.00001f, 0.1f);
-            output["MergeNormalsThreshold"] = 511.4314f;
-            output["UseEdgeLength"] = 28.35465f;
+            output["MergeNormalsThreshold"] = 348.8453f;
+            //output["UseEdgeLength"] = 28.35465f;
             //output["UpdateFarNeighbors"] = Random.Range(0f, 0.75f);
             //output["UpdateMinsOnCollapse"] = Random.Range(0.25f, 1f);
-            output["EdgeBorderPenalty"] = 355.1594f;
-            output["CollapseToMidpointPenalty"] = 0.2182411f;
+            output["EdgeBorderPenalty"] = 1027.007f;
+            output["CollapseToMidpointPenalty"] = 0.4716252f;
             return output;
         }
 
@@ -172,18 +184,9 @@ namespace Nanolod.Calibration
             for (int i = 0; i < mutationsPerIteration; i++)
             {
                 var pair = output.ElementAt(Random.Range(0, values.Count));
-                output[pair.Key] *= Random.Range(1f / 10f, 10f);
+                output[pair.Key] *= Random.Range(1f / mutationMaximum, mutationMaximum);
             }
 
-            //float f = pair.Value;
-            //float* fp = &f;
-            //int* ip = (int*)fp;
-            //int i = ip[0];
-            //i ^= (1 << Random.Range(0, 32));
-            //ip = &i;
-            //fp = (float*)ip;
-            //f = fp[0];
-            //output[pair.Key] = f;
             return output;
         }
 
@@ -222,7 +225,7 @@ namespace Nanolod.Calibration
                 // Important step :
                 // We merge positions to increase chances of having correct topology information
                 // We merge attributes in order to make interpolation properly operate on every face
-                connectedMesh.MergePositions(0.01f/*variables["MergeThreshold"]*/);
+                connectedMesh.MergePositions(0.0001f/*variables["MergeThreshold"]*/);
                 connectedMesh.MergeAttributes();
                 connectedMesh.Compact();
             }
@@ -230,7 +233,7 @@ namespace Nanolod.Calibration
             DecimateModifier.MergeNormalsThresholdDegrees = variables["MergeNormalsThreshold"];
             //DecimateModifier.UpdateFarNeighbors = variables["UpdateFarNeighbors"] > 0.5;
             //DecimateModifier.UpdateMinsOnCollapse = variables["UpdateMinsOnCollapse"] > 0.5;
-            DecimateModifier.UseEdgeLength = variables["UseEdgeLength"] > 0.5;
+            //DecimateModifier.UseEdgeLength = variables["UseEdgeLength"] > 0.5;
             DecimateModifier.CollapseToMidpointPenalty = variables["CollapseToMidpointPenalty"];
             ConnectedMesh.EdgeBorderPenalty = variables["EdgeBorderPenalty"];
 
