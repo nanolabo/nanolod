@@ -149,13 +149,15 @@ namespace Nanolod.Calibration
         private Dictionary<string, float> GetInitialState()
         {
             var output = new Dictionary<string, float>();
-            output["NormalWeight"] = Random.Range(0f, 100f);
+            output["NormalWeight"] = 198.9115f;
+            output["UVsWeight"] = 147.96193f;
             //output["MergeThreshold"] = Random.Range(0.00001f, 0.1f);
-            output["MergeNormalsThreshold"] = Random.Range(5f, 140f) * MathF.PI / 180f;
-            output["UseEdgeLength"] = Random.Range(0f, 1f);
+            output["MergeNormalsThreshold"] = 511.4314f;
+            output["UseEdgeLength"] = 28.35465f;
             //output["UpdateFarNeighbors"] = Random.Range(0f, 0.75f);
             //output["UpdateMinsOnCollapse"] = Random.Range(0.25f, 1f);
-            output["EdgeBorderPenalty"] = Random.Range(0f, 1000f);
+            output["EdgeBorderPenalty"] = 355.1594f;
+            output["CollapseToMidpointPenalty"] = 0.2182411f;
             return output;
         }
 
@@ -208,6 +210,9 @@ namespace Nanolod.Calibration
                         case AttributeType.Normals:
                             connectedMesh.attributeDefinitions[i].weight = variables["NormalWeight"];
                             break;
+                        case AttributeType.UVs:
+                            connectedMesh.attributeDefinitions[i].weight = variables["UVsWeight"];
+                            break;
                     }
                 }
             }
@@ -222,10 +227,11 @@ namespace Nanolod.Calibration
                 connectedMesh.Compact();
             }
 
-            DecimateModifier.MergeNormalsThreshold = variables["MergeNormalsThreshold"];
+            DecimateModifier.MergeNormalsThresholdDegrees = variables["MergeNormalsThreshold"];
             //DecimateModifier.UpdateFarNeighbors = variables["UpdateFarNeighbors"] > 0.5;
             //DecimateModifier.UpdateMinsOnCollapse = variables["UpdateMinsOnCollapse"] > 0.5;
             DecimateModifier.UseEdgeLength = variables["UseEdgeLength"] > 0.5;
+            DecimateModifier.CollapseToMidpointPenalty = variables["CollapseToMidpointPenalty"];
             ConnectedMesh.EdgeBorderPenalty = variables["EdgeBorderPenalty"];
 
             SceneDecimator sceneDecimator = new SceneDecimator();

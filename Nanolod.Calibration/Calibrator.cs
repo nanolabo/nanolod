@@ -140,7 +140,7 @@ namespace Nanolod.Calibration
                 connectedMesh.Compact();
             }
 
-            DecimateModifier.MergeNormalsThreshold = variables["MergeNormalsThreshold"];
+            DecimateModifier.MergeNormalsThresholdDegrees = variables["MergeNormalsThreshold"];
             DecimateModifier.UpdateFarNeighbors = variables["UpdateFarNeighbors"] > 0.5;
             DecimateModifier.UpdateMinsOnCollapse = variables["UpdateMinsOnCollapse"] > 0.5;
             DecimateModifier.UseEdgeLength = variables["UseEdgeLength"] > 0.5;
