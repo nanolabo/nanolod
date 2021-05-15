@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
+using UnityEditor.VersionControl;
 using UnityEngine;
 
 namespace Nanolod
@@ -22,18 +23,30 @@ namespace Nanolod
             HashSet<Mesh> newMeshes = new HashSet<Mesh>();
 
             LODGroupMenu.GenerateLODs(lodGroup, newMeshes);
-
-            string pathToAsmDef = AssetDatabase.GUIDToAssetPath("77926c82de2364debab5082355addfb4");
-            string directory = Path.GetDirectoryName(pathToAsmDef);;
-            string path = Path.Combine(directory, "Cache", $"{gameObject.GetInstanceID()}.asset");
-            string fullPath = Path.GetFullPath(path);
             
-            Directory.CreateDirectory(fullPath);
+            string path;
             
-            if (AssetDatabase.DeleteAsset(path))
-                AssetDatabase.Refresh();
+            if (AssetDatabase.Contains(settings))
+            {
+                // Settings are already serialized in an Asset file : we reuse it
+                path = AssetDatabase.GetAssetPath(settings);
+                foreach (var asset in AssetDatabase.LoadAllAssetsAtPath(path))
+                    if (asset != settings)
+                        AssetDatabase.RemoveObjectFromAsset(asset);
+            }
+            else
+            {
+                // Settings don't exists : we create a new asset in the cache directory
+                string pathToAsmDef = AssetDatabase.GUIDToAssetPath("77926c82de2364debab5082355addfb4");
+                string pluginDir = Path.GetDirectoryName(pathToAsmDef);
+                string cacheDir = Path.Combine(pluginDir, "Cache");
+                path = Path.Combine(cacheDir, $"{settings.GetInstanceID()}.asset");
 
-            AssetDatabase.CreateAsset(settings, path);
+                // Ensure cache directory exists
+                Directory.CreateDirectory(Path.GetFullPath(cacheDir));
+                
+                AssetDatabase.CreateAsset(settings, path);
+            }
 
             int i = 0;
             
