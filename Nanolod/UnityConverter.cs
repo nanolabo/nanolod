@@ -47,7 +47,7 @@ namespace Nanolod
             if (normals != null && normals.Length > 0)
             {
                 int k = attributeDefinitions.Count;
-                attributeDefinitions.Add(new AttributeDefinition(AttributeType.Normals));
+                attributeDefinitions.Add(new AttributeDefinition(AttributeType.Normals, 198.9115f));
                 attributes = attributes.AddAttributeType<NVector3F>();
                 for (int i = 0; i < normals.Length; i++)
                 {
@@ -55,15 +55,15 @@ namespace Nanolod
                 }
             }
 
-            UVector2[] uvs0 = mesh.uv;
-            if (uvs0 != null && uvs0.Length > 0)
+            UVector2[] uvs1 = mesh.uv;
+            if (uvs1 != null && uvs1.Length > 0)
             {
                 int k = attributeDefinitions.Count;
-                attributeDefinitions.Add(new AttributeDefinition(AttributeType.UVs));
+                attributeDefinitions.Add(new AttributeDefinition(AttributeType.UVs, 147.96193f, 0));
                 attributes = attributes.AddAttributeType<NVector2F>();
-                for (int i = 0; i < uvs0.Length; i++)
+                for (int i = 0; i < uvs1.Length; i++)
                 {
-                    attributes[i] = attributes[i].Set(k, new NVector2F(uvs0[i].x, uvs0[i].y));
+                    attributes[i] = attributes[i].Set(k, new NVector2F(uvs1[i].x, uvs1[i].y));
                 }
             }
 
@@ -71,7 +71,7 @@ namespace Nanolod
             if (uvs2 != null && uvs2.Length > 0)
             {
                 int k = attributeDefinitions.Count;
-                attributeDefinitions.Add(new AttributeDefinition(AttributeType.UVs));
+                attributeDefinitions.Add(new AttributeDefinition(AttributeType.UVs, 8.98731f, 1));
                 attributes = attributes.AddAttributeType<NVector2F>();
                 for (int i = 0; i < uvs2.Length; i++)
                 {
@@ -169,7 +169,7 @@ namespace Nanolod
             if (boneWeights != null && boneWeights.Length > 0)
             {
                 int k = attributeDefinitions.Count;
-                attributeDefinitions.Add(new AttributeDefinition(AttributeType.BoneWeights));
+                attributeDefinitions.Add(new AttributeDefinition(AttributeType.BoneWeights, 1f));
                 attributes = attributes.AddAttributeType<NBoneWeight>();
                 for (int i = 0; i < boneWeights.Length; i++)
                 {
@@ -243,7 +243,7 @@ namespace Nanolod
                             NVector2F uv = sharedMesh.attributes[j].Get<NVector2F>(i);
                             uvs[j] = new UVector2(uv.x, uv.y);
                         }
-                        mesh.uv = uvs;
+                        mesh.SetUVs(sharedMesh.attributeDefinitions[i].id, uvs);
                     }
                     else if (sharedMesh.attributeDefinitions[i].type == AttributeType.BoneWeights)
                     {
