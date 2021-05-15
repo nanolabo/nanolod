@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+	<Description>Calibration tools</Description>
+	<Authors>Olivier Giniaux</Authors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Nanolod\Nanolod.csproj" />
+  </ItemGroup>
+
+  <Target Name="CopyToUnityPackage" AfterTargets="AfterBuild">
+    <Copy SourceFiles="$(TargetDir)Nanolod.Calibration.dll" DestinationFolder="$(SolutionDir)Package/Binaries" />
+    <Copy SourceFiles="$(TargetDir)Nanolod.Calibration.pdb" DestinationFolder="$(SolutionDir)Package/Binaries" />
+  </Target>
+
+</Project>

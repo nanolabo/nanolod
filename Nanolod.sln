@@ -9,7 +9,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nanomesh", "..\nanomesh\Nan
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{C6799728-2FE4-4CEA-BB47-FF7DF58E660F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nanolod.Editor", "Nanolod.Editor\Nanolod.Editor.csproj", "{E8A2AE1D-C92D-4685-A407-BB21F51E41E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nanolod.Editor", "Nanolod.Editor\Nanolod.Editor.csproj", "{E8A2AE1D-C92D-4685-A407-BB21F51E41E7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nanolod.Calibration", "Nanolod.Calibration\Nanolod.Calibration.csproj", "{B7EF3DDA-713C-4591-94E6-0BAB522B6856}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EC53608D-26CF-4FB2-8355-D5A03F318A8E}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +57,16 @@ Global
 		{E8A2AE1D-C92D-4685-A407-BB21F51E41E7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E8A2AE1D-C92D-4685-A407-BB21F51E41E7}.Symbols|Any CPU.ActiveCfg = Debug|Any CPU
 		{E8A2AE1D-C92D-4685-A407-BB21F51E41E7}.Symbols|Any CPU.Build.0 = Debug|Any CPU
+		{B7EF3DDA-713C-4591-94E6-0BAB522B6856}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7EF3DDA-713C-4591-94E6-0BAB522B6856}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7EF3DDA-713C-4591-94E6-0BAB522B6856}.Native|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7EF3DDA-713C-4591-94E6-0BAB522B6856}.Native|Any CPU.Build.0 = Debug|Any CPU
+		{B7EF3DDA-713C-4591-94E6-0BAB522B6856}.Obfuscated|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7EF3DDA-713C-4591-94E6-0BAB522B6856}.Obfuscated|Any CPU.Build.0 = Debug|Any CPU
+		{B7EF3DDA-713C-4591-94E6-0BAB522B6856}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7EF3DDA-713C-4591-94E6-0BAB522B6856}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7EF3DDA-713C-4591-94E6-0BAB522B6856}.Symbols|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7EF3DDA-713C-4591-94E6-0BAB522B6856}.Symbols|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,17 +1,15 @@
 ﻿using Nanomesh;
 using System.Collections.Generic;
 using UnityEngine;
-
 using NBoneWeight = Nanomesh.BoneWeight;
+using NColor32 = Nanomesh.Color32;
 using NVector2F = Nanomesh.Vector2F;
 using NVector3 = Nanomesh.Vector3;
 using NVector3F = Nanomesh.Vector3F;
-using NColor32 = Nanomesh.Color32;
-
 using UBoneWeight = UnityEngine.BoneWeight;
+using UColor32 = UnityEngine.Color32;
 using UVector2 = UnityEngine.Vector2;
 using UVector3 = UnityEngine.Vector3;
-using UColor32 = UnityEngine.Color32;
 
 namespace Nanolod
 {
@@ -27,7 +25,7 @@ namespace Nanolod
         public static SharedMesh ToSharedMesh(this Mesh mesh)
         {
             System.Console.WriteLine($"Vertex count:{mesh.vertexCount}");
-            
+
             UVector3[] vertices = mesh.vertices;
 
             SharedMesh sharedMesh = new SharedMesh();

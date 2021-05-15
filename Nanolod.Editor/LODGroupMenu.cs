@@ -63,7 +63,7 @@ namespace Nanolod
                 }
             }
 
-            foreach (var uniqueMesh in uniqueMeshes)
+            foreach (KeyValuePair<Mesh, ConnectedMesh> uniqueMesh in uniqueMeshes)
             {
                 uniqueMesh.Value.MergePositions(0.0001);
             }
