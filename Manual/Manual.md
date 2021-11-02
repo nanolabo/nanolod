@@ -1,4 +1,4 @@
-# Nanolod Manual
+# Nanolod 1.2 Manual
 
 ## What is Nanolod
 
@@ -49,5 +49,5 @@ Generated meshes will be saved within the scene itself. If you prefer to save th
 
 Checkout the two samples to see the plugin in action !
 
-![from LODGroup](nanolod/Manual/lodgroup.png)
+![from LODGroup](nanolod/Manual/lodgroup.png)  
 ![from model](nanolod/Manual/modelimporter.png)
