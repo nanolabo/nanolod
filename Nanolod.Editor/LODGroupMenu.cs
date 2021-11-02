@@ -1,7 +1,10 @@
 ﻿using Nanomesh;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Experimental.SceneManagement;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 namespace Nanolod
@@ -13,11 +16,124 @@ namespace Nanolod
         {
             LODGroup lodGroup = (LODGroup)command.context;
 
-            GenerateLODs(lodGroup);
+            var prefabRoot = lodGroup.gameObject;
+
+            var stage = PrefabStageUtility.GetCurrentPrefabStage();
+            if (stage != null)
+            {
+                if (!stage.IsPartOfPrefabContents(prefabRoot))
+                {
+                    Debug.LogWarning($"Nanolod: The prefab mode is open but the selected lod group is not part of it! LOD generation aborted.");
+                    return;
+                }
+            }
+
+            HashSet<Mesh> newMeshes = new HashSet<Mesh>();
+            HashSet<Mesh> deletedMeshes = new HashSet<Mesh>();
+
+            GenerateLODs(lodGroup, newMeshes, deletedMeshes);
+
+            // Try to delete unused assets, if any
+            bool assetsDeleted = false;
+            foreach (var deletedMesh in deletedMeshes)
+            {
+                try
+                {
+                    var assetPath = AssetDatabase.GetAssetPath(deletedMesh);
+                    var mainAsset = AssetDatabase.LoadMainAssetAtPath(assetPath);
+                    if (mainAsset is Mesh mesh && mesh.name.StartsWith("lod_"))
+                    {
+                        AssetDatabase.DeleteAsset(assetPath);
+                        assetsDeleted = true;
+                    }
+                }
+                catch { }
+            }
+
+            if (stage)
+            {
+                var prefabAsset = AssetDatabase.LoadAssetAtPath<GameObject>(stage.assetPath);
+
+                foreach (var deletedMesh in deletedMeshes)
+                {
+                    try
+                    {
+                        AssetDatabase.RemoveObjectFromAsset(deletedMesh);
+                    }
+                    catch { }
+                }
+
+                if (Preferences.SaveMeshesInPrefab)
+                {
+                    foreach (var newMesh in newMeshes)
+                    {
+                        AssetDatabase.AddObjectToAsset(newMesh, prefabAsset);
+                    }
+                }
+                else
+                {
+                    SaveMeshesAsAssets(newMeshes);
+                }
+
+                // Trigger save
+                EditorSceneManager.MarkSceneDirty(stage.scene);
+            }
+            else
+            {
+                if (!Preferences.SaveMeshesInScene)
+                {
+                    SaveMeshesAsAssets(newMeshes);
+                }
+            }
+
+            if (assetsDeleted)
+            {
+                AssetDatabase.Refresh();
+            }
         }
 
-        public static void GenerateLODs(LODGroup lodGroup, HashSet<Mesh> newMeshes = null)
+        private static void SaveMeshesAsAssets(IEnumerable<Mesh> meshes)
         {
+            foreach (var mesh in meshes)
+            {
+                string path = Path.Combine(Preferences.SaveMeshesPath, $"lod_{mesh.GetInstanceID()}.asset");
+
+                // Ensure directory exists
+                Directory.CreateDirectory(Path.GetFullPath(path));
+
+                AssetDatabase.CreateAsset(mesh, path);
+            }
+
+            AssetDatabase.SaveAssets();
+        }
+
+        private static bool TryGetMesh(this Renderer renderer, out Mesh mesh)
+        {
+            mesh = null;
+
+            if (renderer != null)
+            {
+                if (renderer is SkinnedMeshRenderer skinnedMeshRenderer)
+                {
+                    mesh = skinnedMeshRenderer.sharedMesh;
+                }
+                else
+                {
+                    var meshFilter = renderer.gameObject.GetComponent<MeshFilter>();
+                    if (meshFilter != null)
+                    {
+                        mesh = meshFilter.sharedMesh;
+                    }
+                }
+            }
+
+            return mesh != null;
+        }
+
+        public static void GenerateLODs(LODGroup lodGroup, HashSet<Mesh> newMeshes = null, HashSet<Mesh> deletedMeshes = null)
+        {
+            var stage = PrefabStageUtility.GetCurrentPrefabStage();
+
             LOD[] lods = lodGroup.GetLODs();
 
             // Cleanup
@@ -26,7 +142,16 @@ namespace Nanolod
                 foreach (Renderer renderer in lods[i].renderers)
                 {
                     if (renderer != null)
+                    {
+                        if (deletedMeshes != null) {
+                            if (TryGetMesh(renderer, out Mesh mesh))
+                            {
+                                deletedMeshes.Add(mesh);
+                            }
+                        }
+
                         Object.DestroyImmediate(renderer.gameObject);
+                    }
                 }
             }
 
